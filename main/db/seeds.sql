@@ -1,21 +1,31 @@
--- AS A business owner
--- I WANT to be able to view and manage the departments, roles, and employees in my company
--- SO THAT I can organize and plan my business
+-- Add a department
+INSERT INTO department (name) VALUES ('New Department Name');
 
--- GIVEN a command-line application that accepts user input
--- WHEN I start the application
--- THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
--- WHEN I choose to view all departments
--- THEN I am presented with a formatted table showing department names and department ids
--- WHEN I choose to view all roles
--- THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
--- WHEN I choose to view all employees
--- THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
--- WHEN I choose to add a department
--- THEN I am prompted to enter the name of the department and that department is added to the database
--- WHEN I choose to add a role
--- THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
--- WHEN I choose to add an employee
--- THEN I am prompted to enter the employee's first name, last name, role, and manager, and that employee is added to the database
--- WHEN I choose to update an employee role
--- THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+-- Add a role
+INSERT INTO role (title, salary, department_id) 
+VALUES ('New Role Title', 50000.00, (SELECT id FROM department WHERE name = 'Department Name'));
+
+-- Add an employee
+INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+VALUES ('John', 'Doe', 
+        (SELECT id FROM role WHERE title = 'Role Title'), 
+        (SELECT id FROM employee WHERE first_name = 'ManagerFirstName' AND last_name = 'ManagerLastName'));
+
+-- Update an employee role
+UPDATE employee 
+SET role_id = (SELECT id FROM role WHERE title = 'New Role Title')
+WHERE id = (SELECT id FROM employee WHERE first_name = 'EmployeeFirstName' AND last_name = 'EmployeeLastName');
+
+-- Note: The above INSERT and UPDATE statements would typically be parameterized in actual code to prevent SQL injection.
+
+-- Bonus functionalities (npm not in original requirements but useful):
+
+-- Update employee managers
+UPDATE employee 
+SET manager_id = (SELECT id FROM employee WHERE first_name = 'NewManagerFirstName' AND last_name = 'NewManagerLastName')
+WHERE id = (SELECT id FROM employee WHERE first_name = 'EmployeeFirstName' AND last_name = 'EmployeeLastName');
+
+-- View employees by manager
+SELECT e.* 
+FROM employee e
+WHERE e.manager_id = (SELECT id FROM employee WHERE first_name = 'ManagerFirstName' AND)
