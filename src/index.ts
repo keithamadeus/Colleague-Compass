@@ -251,7 +251,7 @@ inquirer.prompt(questions).then((answers) => {
 //     console.log('Selected:', answers.departments);
 // });
 
-// TODO: Create a function to initialize app
+//  Create a function to initialize app
 // function init() {
 //     inquirer.prompt(questions)
 //         .then((answers) => {
@@ -265,7 +265,7 @@ inquirer.prompt(questions).then((answers) => {
 // // Function call to initialize app
 // init();
 
-// // TODO: Create a function to write README file
+// // Create a function to write README file
 // function writeToFile(fileName, data) {
 //     fs.writeFile(fileName, data, (err) =>
 //         err ? console.error(err): console.log('ReadMe file created!'))
