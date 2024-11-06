@@ -1,8 +1,8 @@
--- Initialize the database
--- CREATE DATABASE employee_tracker;
-
 -- Drop tables if they exist
 DROP DATABASE IF EXISTS employee_tracker;
+
+-- Initialize the database
+CREATE DATABASE employee_tracker;
 
 -- Use the database
 -- USE employee_tracker;

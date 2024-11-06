@@ -1,11 +1,23 @@
-import inquirer from 'inquirer';
+import inquirer from "inquirer";
 
-const questions = [
+// bring in connection.ts the same way as the min project.
+
+
+
+interface Question {
+    type: string;
+    name: string;
+    message: string;
+    choices: string[];
+}
+
+const questions:Question[] = [
     {
         type: 'list',
         name: 'departments',
         message: 'Please choose a license for your project.',
         choices: [
+            // build a function for each option in a switch statement
             'View all departments',
             'View all roles',
             'View all employees',
@@ -16,32 +28,29 @@ const questions = [
             'None'
         ]
     }
+
+    // {
+    //     type: 'input',
+    //     name: 'departments',
+    //     message: 'Please choose a license for your project.',
+    // }
+
 ];
 
-inquirer.prompt(questions).then((answers) => {
+// Justin note: in order to use await we need to have it in an async function
+// Create a async await init function to initialize app, inquire.prompt will be inside. 
+// Switch statment to handle the different cases of the user input.
+// with add role and dept, you will have to create a new sql query to add the role and dept to the database.
+
+async function init() {
+    const answers = await inquirer.prompt(questions);
     console.log('Selected:', answers.departments);
-});
+}
 
-// import inquirer from 'inquirer';
-// // import fs from 'fs';
-// import { QuestionCollection } from 'inquirer';
+init();
 
-// const questions: QuestionCollection = [
-//     {
-//         type: 'list',
-//         name: 'departments',
-//         message: 'Please choose a license for your project.',
-//         choices: [
-//             'View all departments',
-//             'View all roles',
-//             'View all employees',
-//             'Add a department',
-//             'Add a role',
-//             'Add an employee',
-//             'Update an employee role',
-//             'None'
-//         ]
-//     },
+
+
 //     // WHEN I start the application THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 //     {
 //         // WHEN I choose to view all departments THEN I am presented with a formatted table showing department names and department ids
