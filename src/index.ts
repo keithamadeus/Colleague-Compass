@@ -23,9 +23,9 @@ const questions:Question[] = [
             'View all departments',
             'View all roles',
             'View all employees',
-            // 'Add a department',
-            // 'Add a role',
-            // 'Add an employee',
+            'Add a department',
+            'Add a role',
+            'Add an employee',
             // 'Update an employee role',
             'None'
         ]
@@ -54,15 +54,15 @@ async function init() {
         case 'View all employees':
             viewEmployees();
             break;
-        // case 'Add a department':
-        //     addDepartment();
-        //     break;
-        // case 'Add a role':
-        //     addRole();
-        //     break;
-        // case 'Add an employee':
-        //     addEmployee();
-        //     break;
+        case 'Add a department':
+            addDepartment();
+            break;
+        case 'Add a role':
+            addRole();
+            break;
+        case 'Add an employee':
+            addEmployee();
+            break;
         // case 'Update an employee role':
         //     updateEmployeeRole();
         //     break;
@@ -113,6 +113,103 @@ async function viewEmployees() {
         console.error(err);
     }
 }
+
+// Function to add a department
+async function addDepartment() {
+    const newDepartment = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Enter the name of the department:'
+        }
+    ]);
+
+    const sql = `INSERT INTO department (name) VALUES ($1)`;
+    const values = [newDepartment.name];
+
+    try {
+        await pool.query(sql, values);
+        console.log('Department added successfully.');
+        init();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Function to add a role
+async function addRole() {
+    const newRole = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Enter the title of the role:'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the salary of the role:'
+        },
+        {
+            type: 'input',
+            name: 'department_id',
+            message: 'Enter the department ID of the role:'
+        }
+    ]);
+
+    const sql = `INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)`;
+    const values = [newRole.title, newRole.salary, newRole.department_id];
+
+    try {
+        await pool.query(sql, values);
+        console.log('Role added successfully.');
+        init();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Function to add an employee
+async function addEmployee() {
+    const newEmployee = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: 'Enter the first name of the employee:'
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'Enter the last name of the employee:'
+        },
+        {
+            type: 'input',
+            name: 'role_id',
+            message: 'Enter the role ID of the employee:'
+        },
+        {
+            type: 'input',
+            name: 'manager_id',
+            message: 'Enter the manager ID of the employee:'
+        }
+    ]);
+
+    // Set manager_id to null if it is empty
+    const managerId = newEmployee.manager_id ? newEmployee.manager_id : null;
+
+    const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`;
+    const values = [newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, managerId];
+
+    try {
+        await pool.query(sql, values);
+        console.log('Employee added successfully.');
+        init();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+
 
 init();
 
