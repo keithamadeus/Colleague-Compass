@@ -1,8 +1,9 @@
 import inquirer from "inquirer";
 
 // bring in connection.ts the same way as the min project.
+import { pool, connectToDb } from './connection.js';
 
-
+await connectToDb();
 
 interface Question {
     type: string;
@@ -11,29 +12,24 @@ interface Question {
     choices: string[];
 }
 
+// Questions function to prompt user to choose select options
 const questions:Question[] = [
     {
         type: 'list',
         name: 'departments',
-        message: 'Please choose a license for your project.',
+        message: 'Please select from the following options.',
         choices: [
             // build a function for each option in a switch statement
             'View all departments',
             'View all roles',
             'View all employees',
-            'Add a department',
-            'Add a role',
-            'Add an employee',
-            'Update an employee role',
+            // 'Add a department',
+            // 'Add a role',
+            // 'Add an employee',
+            // 'Update an employee role',
             'None'
         ]
     }
-
-    // {
-    //     type: 'input',
-    //     name: 'departments',
-    //     message: 'Please choose a license for your project.',
-    // }
 
 ];
 
@@ -41,10 +37,81 @@ const questions:Question[] = [
 // Create a async await init function to initialize app, inquire.prompt will be inside. 
 // Switch statment to handle the different cases of the user input.
 // with add role and dept, you will have to create a new sql query to add the role and dept to the database.
+// Use comments as checklist to get each function working correctly. 
 
+// Create a function to initialize app
 async function init() {
     const answers = await inquirer.prompt(questions);
     console.log('Selected:', answers.departments);
+
+    switch (answers.departments) {
+        case 'View all departments':
+            viewDepartments();
+            break;
+        case 'View all roles':
+            viewRoles();
+            break;
+        case 'View all employees':
+            viewEmployees();
+            break;
+        // case 'Add a department':
+        //     addDepartment();
+        //     break;
+        // case 'Add a role':
+        //     addRole();
+        //     break;
+        // case 'Add an employee':
+        //     addEmployee();
+        //     break;
+        // case 'Update an employee role':
+        //     updateEmployeeRole();
+        //     break;
+        default:
+            console.log('Exiting application.');
+            process.exit(0);
+    }
+}
+
+// Function for viewing departments
+async function viewDepartments() {
+    const sql = `SELECT * FROM department`;
+
+    try {
+        const result = await pool.query(sql);
+        const { rows } = result;
+        console.table(rows);
+        init();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Function to view roles
+async function viewRoles() {
+    const sql = `SELECT * FROM role`;
+
+    try {
+        const result = await pool.query(sql);
+        const { rows } = result;
+        console.table(rows);
+        init();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Function to view employees
+async function viewEmployees() {
+    const sql = `SELECT * FROM employee`;
+
+    try {
+        const result = await pool.query(sql);
+        const { rows } = result;
+        console.table(rows);
+        init();
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 init();
