@@ -14,9 +14,9 @@ INSERT INTO role (title, salary, department_id) VALUES
 	('Cheif Operations Officer', 175000, 3); 
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
-	('Eric', 'Rowles', 1, null),
-	('Keith', 'Williams', 2, 1),
-	('Kathy', 'Saville', 3, null),
-	('Brook', 'Saville', 4, 3),
-	('Heidi', 'Williams', 5, null), 
-	('Keith', 'Williams Sr', 6, 5);
+	('Gandalf', 'TheWhite', 1, null),
+	('Frodo', 'Baggins', 2, 1),
+	('Samwise', 'Gamgee', 3, null),
+	('Merry', 'Brandybuck', 4, 3),
+	('Pippin', 'Took', 5, null), 
+	('Aragorn', 'Elessar', 6, 5);
